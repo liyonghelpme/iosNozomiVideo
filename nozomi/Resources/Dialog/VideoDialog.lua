@@ -1,0 +1,26 @@
+VideoDialog = class()
+
+function VideoDialog:ctor()
+    local temp, bg = nil
+    bg = UI.createButton(CCSizeMake(720, 526), doNothing, {image="images/dialogBgA.png", priority=display.DIALOG_PRI, nodeChangeHandler = doNothing})
+    screen.autoSuitable(bg, {screenAnchor=General.anchorCenter, scaleType = screen.SCALE_DIALOG_CLEVER})
+    temp = UI.createLabel(StringManager.getString("labelDownloadVideo"), General.font1, 25, {colorR = 75, colorG = 66, colorB = 46, size=CCSize(417, 120), align=kCCTextAlignmentLeft})
+    screen.autoSuitable(temp, {x=467, y=274, nodeAnchor=General.anchorCenter})
+    bg:addChild(temp)
+    temp = UI.createSpriteWithFile("images/dialogItemBlood.png",CCSizeMake(292, 222))
+    screen.autoSuitable(temp, {x=400, y=50})
+    bg:addChild(temp)
+    temp = UI.createButton(CCSizeMake(133, 60), display.closeDialog, {image="images/buttonGreen.png", text=StringManager.getString("buttonOk"), fontSize=25, fontName=General.font3})
+    screen.autoSuitable(temp, {x=441, y=119, nodeAnchor=General.anchorCenter})
+    bg:addChild(temp)
+    temp = UI.createLabel(StringManager.getString("titleVideo"), General.font3, 30, {colorR = 255, colorG = 255, colorB = 255})
+    screen.autoSuitable(temp, {x=360, y=489, nodeAnchor=General.anchorCenter})
+    bg:addChild(temp)
+    temp = UI.createButton(CCSizeMake(50, 49), display.closeDialog, {image="images/buttonClose.png"})
+    screen.autoSuitable(temp, {x=681, y=489, nodeAnchor=General.anchorCenter})
+    bg:addChild(temp)
+    temp = UI.createSpriteWithFile("images/soldierFeature8.png",CCSizeMake(222, 301))
+    screen.autoSuitable(temp, {x=48, y=111})
+    bg:addChild(temp)
+    self.view = bg
+end
