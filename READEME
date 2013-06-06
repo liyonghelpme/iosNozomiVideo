@@ -1,5 +1,0 @@
-CameraFile:
-	startWork  videWidth and height is different from screen Width height
-	1024 768    
-	960 640
-	compressFrame
