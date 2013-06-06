@@ -100,6 +100,7 @@ void CCDirector::setShowLayer(cocos2d::CCNode *s) {
     showLayer = s;
     showLayer->retain();
 }
+//screen texture size = 2048*2048
 void CCDirector::startRecording() {
      if (!isRecording) {
          GLint oldFBO;
@@ -281,11 +282,11 @@ void CCDirector::drawScene(void)
         m_pScheduler->update(m_fDeltaTime);
     }
 
-    //Ê¹ÓÃ 0 ×÷ÎªshowLayer ÏÔÊ¾
+    //Â Ï€â€âˆš 0 â—ŠËœÅ’â„¢showLayer Å“â€˜Â Ã¦
     GLint oldFBO;
     glGetIntegerv(GL_FRAMEBUFFER_BINDING, &oldFBO);
     
-    //äÖÈ¾renderLayer µ½ frameBuffer
+    //â€°Ã·Â»Ã¦renderLayer ÂµÎ© frameBuffer
     if (isRecording) {
         glBindFramebuffer(GL_FRAMEBUFFER, frameBuffer);
     }
@@ -311,7 +312,7 @@ void CCDirector::drawScene(void)
 			m_pRunningScene->visit();
 		}
 	}
-    //Â¼ÖÆµÄÊ±ºò²»ÏÔÊ¾ÌáÊ¾
+    //Â¬ÂºÃ·âˆ†ÂµÆ’Â Â±âˆ«Ãšâ‰¤ÂªÅ“â€˜Â Ã¦ÃƒÂ·Â Ã¦
 	if (!isRecording) {
         // draw the notifications node
         if (m_pNotificationNode)
@@ -326,7 +327,7 @@ void CCDirector::drawScene(void)
     }
     //if (isRecording) {
         //glBindFramebuffer(GL_FRAMEBUFFER, oldFBO);
-        //½«»æÖÆµÄÎÆÀí°ó¶¨µ½spriteÉÏ ½øÐÐ»æÖÆ ½øÐÐvisit
+        //Î©Â´ÂªÃŠÃ·âˆ†ÂµÆ’Å’âˆ†Â¿ÃŒâˆžÃ›âˆ‚Â®ÂµÎ©spriteâ€¦Å“ Î©Â¯â€“â€“ÂªÃŠÃ·âˆ† Î©Â¯â€“â€“visit
         //recordSprite->visit();
     //}
     
@@ -340,14 +341,14 @@ void CCDirector::drawScene(void)
         m_pobOpenGLView->swapBuffers();
     }
 
-    //ÏÔÊ¾showLayer
-    //ÐèÒªÏÈ°ó¶¨framebuffer ÔÙÇåÀíÊý¾Ý
+    //Å“â€˜Â Ã¦showLayer
+    //â€“Ã‹â€œâ„¢Å“Â»âˆžÃ›âˆ‚Â®framebuffer â€˜Å¸Â«Ã‚Â¿ÃŒÂ ËÃ¦â€º
     if (isRecording) {
         glBindFramebuffer(GL_FRAMEBUFFER, oldFBO);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        //½«»æÖÆµÄÎÆÀí°ó¶¨µ½spriteÉÏ ½øÐÐ»æÖÆ ½øÐÐvisit
+        //Î©Â´ÂªÃŠÃ·âˆ†ÂµÆ’Å’âˆ†Â¿ÃŒâˆžÃ›âˆ‚Â®ÂµÎ©spriteâ€¦Å“ Î©Â¯â€“â€“ÂªÃŠÃ·âˆ† Î©Â¯â€“â€“visit
         //recordSprite->visit();
-        //ÏÔÊ¾showLayer
+        //Å“â€˜Â Ã¦showLayer
         if(showLayer) {
             kmGLPushMatrix();
             showLayer->visit();

@@ -191,20 +191,22 @@ bool CCTouchLayer::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 				ret = true;
 			}
 		}
-		CCObject* child;
-		CCARRAY_FOREACH(m_pChildTouchLayers, child)
-		{
-			CCTouchLayer* pNode = (CCTouchLayer*) child;
-			if(pNode && pNode->ccTouchBegan(pTouch, pEvent)){
-				ret = isTouch = true;
-				m_pChildTouchMap[id] = pNode;
-				break;
+		if(!m_bTouchHold || ret){
+			CCObject* child;
+			CCARRAY_FOREACH(m_pChildTouchLayers, child)
+			{
+				CCTouchLayer* pNode = (CCTouchLayer*) child;
+				if(pNode && pNode->ccTouchBegan(pTouch, pEvent)){
+					ret = isTouch = true;
+					m_pChildTouchMap[id] = pNode;
+					break;
+				}
 			}
-		}
-		if(!isTouch && m_uLuaTouchHandler!=0){
-			if(this->excuteScriptTouchHandler(CCTOUCHBEGAN, pTouch)>0){
-				ret = true;
-				m_pChildTouchMap[id] = this;
+			if(!isTouch && m_uLuaTouchHandler!=0){
+				if(this->excuteScriptTouchHandler(CCTOUCHBEGAN, pTouch)>0){
+					ret = true;
+					m_pChildTouchMap[id] = this;
+				}
 			}
 		}
 		if(ret){
