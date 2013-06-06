@@ -109,16 +109,17 @@ void CameraFile::savedToCamera() {
     delete this;
     //[[NSFileManager defaultManager] removeItemAtPath:[NSString stringWithFormat:@"%s", fileName] error:nil];
 }
-void CameraFile::startWork(int width, int height) {
+void CameraFile::startWork(int w, int h) {
     //根据屏幕尺寸设定视频尺寸
-    if(width > 1000) {
+    if(w > 1000) {
         this->width = 1024;
         this->height = 768;
     } else {
         this->width = 960;
         this->height = 640;
     }
-    frameData = (uint8_t*)malloc(width*4);
+    
+    //frameData = (uint8_t*)malloc(this->width*4);
     const char *fileName = this->getFileName();
     //fn = [NSString stringWithFormat:@"%s", fileName];
     NSError *error = nil;
@@ -137,8 +138,8 @@ void CameraFile::startWork(int width, int height) {
     [outputSettings autorelease];
     
     [outputSettings setObject:AVVideoCodecH264 forKey:AVVideoCodecKey];
-    [outputSettings setObject:[NSNumber numberWithInt:width] forKey:AVVideoWidthKey];
-    [outputSettings setObject:[NSNumber numberWithInt:height] forKey:AVVideoHeightKey];
+    [outputSettings setObject:[NSNumber numberWithInt:this->width] forKey:AVVideoWidthKey];
+    [outputSettings setObject:[NSNumber numberWithInt:this->height] forKey:AVVideoHeightKey];
     
     assetWriterVideoInput = [AVAssetWriterInput assetWriterInputWithMediaType:AVMediaTypeVideo outputSettings:outputSettings];
     [assetWriterVideoInput retain];
@@ -147,8 +148,8 @@ void CameraFile::startWork(int width, int height) {
     
     
     NSDictionary *sourcePixelBufferAttributesDictionary = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:kCVPixelFormatType_32BGRA], kCVPixelBufferPixelFormatTypeKey,
-                                                           [NSNumber numberWithInt:width], kCVPixelBufferWidthKey,
-                                                           [NSNumber numberWithInt:height], kCVPixelBufferHeightKey,
+                                                           [NSNumber numberWithInt:this->width], kCVPixelBufferWidthKey,
+                                                           [NSNumber numberWithInt:this->height], kCVPixelBufferHeightKey,
                                                            nil];
     assetWriterPixelBufferInput = [AVAssetWriterInputPixelBufferAdaptor assetWriterInputPixelBufferAdaptorWithAssetWriterInput:assetWriterVideoInput sourcePixelBufferAttributes:sourcePixelBufferAttributesDictionary];
     [assetWriterPixelBufferInput retain];
@@ -232,7 +233,7 @@ void CameraFile::stopWork() {
     [assetWriterVideoInput release];
     [assetWriterPixelBufferInput release];
     [startTime release];
-    free(frameData);
+    //free(frameData);
     destroyDataFBO();
 }
 
