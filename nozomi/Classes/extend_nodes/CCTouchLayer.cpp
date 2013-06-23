@@ -184,7 +184,13 @@ bool CCTouchLayer::ccTouchBegan(CCTouch *pTouch, CCEvent *pEvent)
 		if(m_pChildTouchLayers && m_pChildTouchLayers->count()>1){
 			std::sort(m_pChildTouchLayers->data->arr, m_pChildTouchLayers->data->arr + m_pChildTouchLayers->data->num, less);
 		}
-		if(m_bTouchHold && this->isVisible()){
+		bool visible = this->isVisible();
+		CCNode* parent = this->getParent();
+		while(visible && parent!=NULL){
+			visible = parent->isVisible();
+			parent = parent->getParent();
+		}
+		if(m_bTouchHold && visible){
 			CCPoint nodePoint = this->convertToNodeSpace(touchPoint);
 			const CCSize& nodeSize = this->getContentSize();
 			if(nodePoint.x>=0 && nodePoint.y>=0 && nodePoint.x <= nodeSize.width && nodePoint.y <= nodeSize.height){
@@ -242,6 +248,7 @@ void CCTouchLayer::ccTouchEnded(CCTouch *pTouch, CCEvent *pEvent)
 		}
 	}
 	m_uTouchFlags -= (1 << id);
+	m_pChildTouchMap[id] = NULL;
 	if(m_uTouchFlags==0 && m_bIsExit){
 		unregisterTouchHandler();
 		m_bIsExit = false;
@@ -261,6 +268,7 @@ void CCTouchLayer::ccTouchCancelled(CCTouch *pTouch, CCEvent *pEvent)
 		}
 	}
 	m_uTouchFlags -= (1 << id);
+	m_pChildTouchMap[id] = NULL;
 	if(m_uTouchFlags==0 && m_bIsExit){
 		unregisterTouchHandler();
 		m_bIsExit = false;

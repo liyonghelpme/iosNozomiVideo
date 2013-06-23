@@ -54670,6 +54670,7 @@ static int tolua_set_SearchResult_path_ptr(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+
 /* get function: bid of class  SearchResult */
 #ifndef TOLUA_DISABLE_tolua_get_SearchResult_bid
 static int tolua_get_SearchResult_bid(lua_State* tolua_S)
@@ -54699,6 +54700,37 @@ static int tolua_set_SearchResult_bid(lua_State* tolua_S)
  return 0;
 }
 #endif //#ifndef TOLUA_DISABLE
+
+/* get function: realTarget of class  SearchResult */
+#ifndef TOLUA_DISABLE_tolua_get_SearchResult_realTarget
+static int tolua_get_SearchResult_realTarget(lua_State* tolua_S)
+{
+  SearchResult* self = (SearchResult*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'realTarget'",NULL);
+#endif
+  tolua_pushnumber(tolua_S,(lua_Number)self->realTarget);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: realTarget of class  SearchResult */
+#ifndef TOLUA_DISABLE_tolua_set_SearchResult_realTarget
+static int tolua_set_SearchResult_realTarget(lua_State* tolua_S)
+{
+  SearchResult* self = (SearchResult*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  tolua_Error tolua_err;
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'realTarget'",NULL);
+  if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
+   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->realTarget = ((int)  tolua_tonumber(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
 
 /* method: delete of class  SearchResult */
 #ifndef TOLUA_DISABLE_tolua_Cocos2d_SearchResult_delete00
@@ -55087,6 +55119,73 @@ static int tolua_Cocos2d_NewWorld_initPath00(lua_State* tolua_S)
  tolua_error(tolua_S,"#ferror in function 'initPath'.",&tolua_err);
  return 0;
 #endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+
+/* method: checkBlock of class  NewWorld */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_NewWorld_checkBlock00
+static int tolua_Cocos2d_NewWorld_checkBlock00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"NewWorld",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  NewWorld* self = (NewWorld*)  tolua_tousertype(tolua_S,1,0);
+  int x = ((int)  tolua_tonumber(tolua_S,2,0));
+  int y = ((int)  tolua_tonumber(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'checkBlock'", NULL);
+#endif
+  {
+   bool tolua_ret = (bool)  self->checkBlock(x,y);
+   tolua_pushboolean(tolua_S,(bool)tolua_ret);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'checkBlock'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: cellSize of class  NewWorld */
+#ifndef TOLUA_DISABLE_tolua_get_NewWorld_cellSize
+static int tolua_get_NewWorld_cellSize(lua_State* tolua_S)
+{
+  NewWorld* self = (NewWorld*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'cellSize'",NULL);
+#endif
+  tolua_pushnumber(tolua_S,(lua_Number)self->cellSize);
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: cellSize of class  NewWorld */
+#ifndef TOLUA_DISABLE_tolua_set_NewWorld_cellSize
+static int tolua_set_NewWorld_cellSize(lua_State* tolua_S)
+{
+  NewWorld* self = (NewWorld*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+  tolua_Error tolua_err;
+  if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'cellSize'",NULL);
+  if (!tolua_isnumber(tolua_S,2,0,&tolua_err))
+   tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->cellSize = ((int)  tolua_tonumber(tolua_S,2,0))
+;
+ return 0;
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -58036,6 +58135,8 @@ TOLUA_API int tolua_Cocos2d_open (lua_State* tolua_S)
    tolua_variable(tolua_S,"path",tolua_get_SearchResult_path_ptr,tolua_set_SearchResult_path_ptr);
    tolua_variable(tolua_S,"bid",tolua_get_SearchResult_bid,tolua_set_SearchResult_bid);
 
+   tolua_variable(tolua_S,"realTarget",tolua_get_SearchResult_realTarget,tolua_set_SearchResult_realTarget);
+
     tolua_function(tolua_S,"delete",tolua_Cocos2d_SearchResult_delete00);
   tolua_endmodule(tolua_S);
 
@@ -58075,6 +58176,10 @@ TOLUA_API int tolua_Cocos2d_open (lua_State* tolua_S)
    tolua_variable(tolua_S,"searchYet",tolua_get_NewWorld_searchYet,tolua_set_NewWorld_searchYet);
 
    tolua_variable(tolua_S,"tempBuildId",tolua_get_NewWorld_tempBuildId,tolua_set_NewWorld_tempBuildId);
+
+
+   tolua_variable(tolua_S,"cellSize",tolua_get_NewWorld_cellSize,tolua_set_NewWorld_cellSize);
+   tolua_function(tolua_S,"checkBlock",tolua_Cocos2d_NewWorld_checkBlock00);
 
   tolua_endmodule(tolua_S);
 

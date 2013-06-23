@@ -37,9 +37,11 @@ class SearchResult {
 public:
     MyVector *path;
     int bid;
+    int realTarget;
     SearchResult() {
         path = NULL;
         bid = -1;
+        realTarget = -1;
     }
     ~SearchResult() {
         delete path;
@@ -65,6 +67,7 @@ public:
     vector<BuildRange> prevGrid;
     int curTarget;
     long pathTime;
+    long wallTime;
     Cell() {
         state = 0;
         fScore = 0;
@@ -77,6 +80,7 @@ public:
         pathCount = 0;
         curTarget = -1;
         pathTime = 0;
+        wallTime = 0;
     }
 };
 //没有复制数据 直接返回value 可以修改
@@ -145,6 +149,9 @@ public:
     void adjustEndPoint();
     WallResult checkWall(MyVector *path);
     void findWallPath(WallResult *);
+    float cellSize;
+
+    bool checkBlock(int x, int y);
 private:
     bool performance;
     CCNode *benchmark;

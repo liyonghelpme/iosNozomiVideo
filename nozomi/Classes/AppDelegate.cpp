@@ -57,12 +57,16 @@ void AppDelegate::applicationDidEnterBackground()
     CCDirector::sharedDirector()->stopAnimation();
     SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
     SimpleAudioEngine::sharedEngine()->pauseAllEffects();
+    
+    CCNotificationCenter::sharedNotificationCenter()->postNotification("EVENT_COCOS_PAUSE");
 }
 
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground()
 {
     CCDirector::sharedDirector()->startAnimation();
+    
+    CCNotificationCenter::sharedNotificationCenter()->postNotification("EVENT_COCOS_RESUME");
     if(CCUserDefault::sharedUserDefault()->getBoolForKey("musicOn", true))
         SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
     SimpleAudioEngine::sharedEngine()->resumeAllEffects();

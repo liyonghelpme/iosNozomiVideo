@@ -64,6 +64,7 @@ static GCHelper* instance = nil;
     NSLog(@"AVALAIBLE");
     GKLocalPlayer * player = [GKLocalPlayer localPlayer];
     if (player.isAuthenticated == NO) {
+        cocos2d::CCUserDefault::sharedUserDefault()->setStringForKey("username", "");
         player.authenticateHandler = ^(UIViewController* controller, NSError *error){
             if (controller != nil)
             {
@@ -72,6 +73,19 @@ static GCHelper* instance = nil;
             else if (error != nil)
             {
                 NSLog(@"Error msg:%@", [error localizedDescription]);
+                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                NSString* uuid = [userDefaults stringForKey:@"UUID"];
+                if(uuid==nil)
+                {
+                    CFUUIDRef uuidRef = CFUUIDCreate(nil);
+                    CFStringRef uuidString = CFUUIDCreateString(nil, uuidRef);
+                    uuid = (NSString *)CFStringCreateCopy(NULL, uuidString);
+                    [userDefaults setObject:uuid forKey:@"UUID"];
+                    CFRelease(uuidRef);
+                    CFRelease(uuidString);
+                    [uuid autorelease];
+                }
+                cocos2d::CCUserDefault::sharedUserDefault()->setStringForKey("username", [uuid UTF8String]);
             }
         };
     }

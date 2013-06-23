@@ -18,6 +18,8 @@ public:
 	static void postNotification(int duration, const char* content);
 
 	static void clearLocalNotification();
+
+	static void buyProductIdentifier(const char* productId);
     
 private:
     CCNative(void) {}

@@ -74,7 +74,7 @@ NewWorld *NewWorld::create(int n) {
     return p;
 }
 bool NewWorld::init(int n) {
-    maxSearchNum = 5;
+    maxSearchNum = 3;
     searchNum = 0;
     searchYet = false;
     cellNum = n;// 地图加上两条保护边 或者多加几个保护范围
@@ -83,6 +83,7 @@ bool NewWorld::init(int n) {
     benchmark = NULL;
     bigCoff = 8;
     tempBuildId = -1;
+    cellSize = 100;
 
     initCell();
     return true;
@@ -263,7 +264,6 @@ void NewWorld::calcWallG(int x, int y) {
 
     //集中攻击一处城墙
     if(data->state == 3) {
-
         if(data->wallPath)
             dist = 1;
     }
@@ -283,6 +283,7 @@ void NewWorld::calcG(int x, int y) {
     int dist = 10;
     if(difX > 0 && difY > 0)
         dist = 14;
+
     //地面单位考虑 建筑物 城墙
     if(unitType == 1) {
         if(data->state == 2) {
@@ -290,9 +291,20 @@ void NewWorld::calcG(int x, int y) {
         //根据剩余生命值决定 
         //根据攻打的人数决定 life/number/10 = cost
         }else if(data->state == 3) {
-            if(data->wallPath)
-                dist = 1;
-            else
+            if(data->wallPath) {
+                struct timeval start;
+                gettimeofday(&start, NULL);
+                long s = start.tv_sec*1000000+start.tv_usec;
+                s /= 1000;//ms 毫秒
+                //城墙路径超时不再攻打
+                if(s - data->wallTime >= 1000) {
+                    data->wallPath = false;
+                    data->wallTime = 0;
+                    dist = 100;
+                }else {
+                    dist = 1;
+                }
+            }else
                 dist = 100;
         }
     } 
@@ -837,6 +849,7 @@ SearchResult *NewWorld::searchWall() {
     initOpenList();
     //findEndPoint();
     findEndWall();
+    bool hasWall = !walls.empty();
 
 
     cells[getKey(startPoint.x, startPoint.y)].gScore = 0;
@@ -862,7 +875,8 @@ SearchResult *NewWorld::searchWall() {
                 bid = cells[point].bid;
                 //binfo = walls[];
                 break;
-			} else {
+            //当前点是建筑物 且没有城墙目标
+			} else if(!hasWall){
                 vector<BuildRange> *prevGrid = &cells[point].prevGrid;
                 if(!prevGrid->empty() && (*prevGrid)[0].dist <= attackRange) {
                     lastPoint = point;
@@ -976,6 +990,8 @@ SearchResult *NewWorld::searchAttack() {
     delete pqDict;
     //找到目标建筑物信息 则可以攻击 返回路径
     if(binfo != NULL) {
+        //目标建筑物
+        result->realTarget = binfo->bid;
         MyVector *path = getPath(lastPoint, binfo->bid);//当前路径的攻击目标     
         //自动reverse 路径
         WallResult ret = checkWall(path);
@@ -1020,6 +1036,11 @@ WallResult NewWorld::checkWall(MyVector *path) {
         return ret;
     }
 
+    struct timeval start;
+    gettimeofday(&start, NULL);
+    long s = start.tv_sec*1000000+start.tv_usec;
+    s /= 1000;//ms 毫秒
+
     MyVector *temp = new MyVector();
     int i;
     vector<CCPoint> *realPath = &path->path;
@@ -1035,7 +1056,10 @@ WallResult NewWorld::checkWall(MyVector *path) {
             ret.wallX = path->path[i].x;
             ret.wallY = path->path[i].y;
             ret.wallObj = data->bid;
-            data->wallPath = true;
+            if(data->wallPath == false) {
+                data->wallPath = true;
+                data->wallTime = s; 
+            }
             break;
         }
     }
@@ -1088,12 +1112,16 @@ void NewWorld::minusPathCount(int x, int y) {
     }
 }
 
+//清除寻路状态 每帧
 void NewWorld::clearSearchYet() {
+    /*
     searchNum--;
     if(searchNum <= 0) {
-        searchYet = false;
-        searchNum = 0;
+
     }
+    */
+    searchYet = false;
+    searchNum = 0;
 }
 //游戏开始初始化路径信息
 void NewWorld::initPath() {
@@ -1112,4 +1140,8 @@ void NewWorld::initPath() {
 }
 CCPoint NewWorld::getBigCenter(int x, int y){
     return ccp((x-1)*bigCoff+1+bigCoff/2.0f, (y-1)*bigCoff+1+bigCoff/2.0f);
+}
+
+bool NewWorld::checkBlock(int x, int y) {
+    return cells[getKey(x, y)].state != 0;
 }

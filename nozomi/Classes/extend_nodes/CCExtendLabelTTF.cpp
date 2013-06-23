@@ -37,6 +37,9 @@ void CCExtendLabelTTF::setStroke(float stroke)
 
 void CCExtendLabelTTF::setString(const char *string)
 {
+	if(string==NULL){
+		string="";
+	}
     CCAssert(string != NULL, "Invalid string");
     
     if (m_string.compare(string))
@@ -90,6 +93,9 @@ bool CCExtendLabelTTF::updateTexture()
 		tex->release();
 		tex = rt->getSprite()->getTexture();
 		tex->retain();
+		ccTexParams params = {GL_LINEAR, GL_LINEAR, GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE};
+		tex->setTexParameters(&params);
+		//tex->setAntiAliasTexParameters();
 	}
 	
     this->setTexture(tex);

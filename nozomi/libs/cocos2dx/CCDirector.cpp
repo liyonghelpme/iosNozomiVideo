@@ -813,8 +813,6 @@ void CCDirector::pause(void)
     // when paused, don't consume CPU
     setAnimationInterval(1 / 4.0);
     m_bPaused = true;
-    
-    CCNotificationCenter::sharedNotificationCenter()->postNotification("EVENT_COCOS_PAUSE");
 }
 
 void CCDirector::resume(void)
@@ -824,7 +822,6 @@ void CCDirector::resume(void)
         return;
     }
 
-    CCNotificationCenter::sharedNotificationCenter()->postNotification("EVENT_COCOS_RESUME");
     setAnimationInterval(m_dOldAnimationInterval);
 
     if (CCTime::gettimeofdayCocos2d(m_pLastUpdate, NULL) != 0)

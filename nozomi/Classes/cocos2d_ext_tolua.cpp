@@ -1145,7 +1145,7 @@ static int tolua_Cocos2d_CCCrypto_rsaSign00(lua_State* tolua_S)
 		{
 			unsigned char* buffer = new unsigned char[1000];
 			int len = CCCrypto::rsa_sign_with_private((unsigned char *)src, strlen(src), buffer, 1000, key);
-			//int verify = CCCrypto::rsa_verify_with_public((unsigned char*)src, strlen(src), buffer, len, "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCui00NhxlT+ijio8JFqWGVjb/mdreR+GeQ+L/ZrEKj9UoOMdNHGaNw7DdniFE1ehdw9WgQr45cwH8VEUofrDJCbKuzqxN5I/lAtrImIQNQUiVYSowVcvg3fndgnOeFpa51l+De+ZF3+rDtPtFiN15AUnxFdnArpyrv2jnnzp2uZwIDAQAB");
+			int verify = CCCrypto::rsa_verify_with_public((unsigned char*)src, strlen(src), buffer, len, "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCui00NhxlT+ijio8JFqWGVjb/mdreR+GeQ+L/ZrEKj9UoOMdNHGaNw7DdniFE1ehdw9WgQr45cwH8VEUofrDJCbKuzqxN5I/lAtrImIQNQUiVYSowVcvg3fndgnOeFpa51l+De+ZF3+rDtPtFiN15AUnxFdnArpyrv2jnnzp2uZwIDAQAB");
 			const char* temp = CCCrypto::encodeBase64(buffer, len);
 			delete[] buffer;
 			const char* tolua_ret = CCCrypto::encodeUrl(temp);
@@ -1239,6 +1239,35 @@ static int tolua_Cocos2d_CCNative_clearLocalNotification00(lua_State* tolua_S)
 	{
 		{
 			CCNative::clearLocalNotification();
+		}
+	}
+	return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'CCNative'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: buyProductIdentifier of class CCNative */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_CCNative_buyProductIdentifier00
+static int tolua_Cocos2d_CCNative_buyProductIdentifier00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_isusertable(tolua_S, 1, "CCNative", 0, &tolua_err) ||
+		!tolua_isstring(tolua_S,2,0,&tolua_err) ||
+		!tolua_isnoobj(tolua_S,3,&tolua_err)
+	)
+	 goto tolua_lerror;
+	else
+#endif
+	{
+		const char* productId = ((const char*)  tolua_tostring(tolua_S,2,0));
+		{
+			CCNative::buyProductIdentifier(productId);
 		}
 	}
 	return 0;
@@ -1472,6 +1501,7 @@ TOLUA_API int tolua_ext_reg_modules(lua_State* tolua_S)
    tolua_function(tolua_S,"openURL", tolua_Cocos2d_CCNative_openURL00);
    tolua_function(tolua_S,"postNotification", tolua_Cocos2d_CCNative_postNotification00);
    tolua_function(tolua_S,"clearLocalNotification", tolua_Cocos2d_CCNative_clearLocalNotification00);
+   tolua_function(tolua_S,"buyProductIdentifier",tolua_Cocos2d_CCNative_buyProductIdentifier00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"CCWebView","CCWebView","CCObject",NULL);
    tolua_beginmodule(tolua_S,"CCWebView");

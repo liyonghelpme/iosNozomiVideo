@@ -171,6 +171,7 @@ bool CCTextInput::initWithLabel(const char* placeHolder, CCNode* label, CCSize d
 
 	m_pCursorAction = CCRepeatForever::create((CCActionInterval *) CCSequence::create(CCFadeOut::create(0.25f), CCFadeIn::create(0.25f), NULL));
     m_pCursorSprite->runAction(m_pCursorAction);
+	m_pCursorSprite->setVisible(false);
 
 	// add view
 	addChild(m_pLabelNode, 0, 0);
@@ -226,7 +227,10 @@ void CCTextInput::setString(const char *text)
         m_pLabel->setString(m_pInputText->c_str());
 		m_pColor->setColor(m_ColorText);
     }
-    m_nCharCount = _calcCharCount(m_pInputText->c_str());
+	unsigned int inputCharCount = _calcCharCount(m_pInputText->c_str());
+	unsigned int inputByteCount = strlen(m_pInputText->c_str());
+	unsigned int inputComputeCount = inputCharCount + (inputByteCount-inputCharCount)/2;
+    m_nCharCount = inputComputeCount;
 	this->resetView();
 }
 
@@ -314,11 +318,13 @@ void CCTextInput::insertText(const char * text, int len)
     
     if (len > 0)
     {
-		unsigned int inputCharCount = _calcCharCount(sInsert.c_str()) + m_nCharCount;
-		if(inputCharCount>m_limitNum){
+		unsigned int inputByteCount = strlen(sInsert.c_str());
+		unsigned int inputCharCount = _calcCharCount(sInsert.c_str());
+		unsigned int inputComputeCount = inputCharCount + (inputByteCount-inputCharCount)/2;
+		if(m_nCharCount + inputComputeCount>m_limitNum){
 			return;
 		}
-        m_nCharCount = inputCharCount;
+        m_nCharCount = m_nCharCount + inputComputeCount;
         std::string sText(*m_pInputText);
         sText.append(sInsert);
         setString(sText.c_str());
