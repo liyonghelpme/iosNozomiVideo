@@ -44,8 +44,8 @@ void CCNative::clearLocalNotification()
 
 void CCNative::buyProductIdentifier(const char *productId)
 {
-    CCNotificationCenter::sharedNotificationCenter()->postNotification("EVENT_BUY_SUCCESS");
-    //[[IAPHelper sharedHelper] buyProductIdentifier:[NSString stringWithCString:productId encoding:NSUTF8StringEncoding]];
+    //CCNotificationCenter::sharedNotificationCenter()->postNotification("EVENT_BUY_SUCCESS");
+    [[IAPHelper sharedHelper] buyProductIdentifier:[NSString stringWithCString:productId encoding:NSUTF8StringEncoding]];
 }
 
 NS_CC_EXT_END

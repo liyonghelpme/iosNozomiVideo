@@ -111,12 +111,12 @@ void CameraFile::savedToCamera() {
 }
 void CameraFile::startWork(int w, int h) {
     //根据屏幕尺寸设定视频尺寸
-    if(w > 1000) {
+    if(w == 2048) {
         this->width = 1024;
         this->height = 768;
     } else {
-        this->width = 960;
-        this->height = 640;
+        this->width = w;
+        this->height = h;
     }
     
     //frameData = (uint8_t*)malloc(this->width*4);
@@ -192,14 +192,14 @@ void CameraFile::compressFrame() {
     //测试播放动画
     CCSize winSize = CCDirector::sharedDirector()->getVisibleSize();
     CCSprite *recordSprite = CCDirector::sharedDirector()->getRecordSprite();
-    recordSprite->setAnchorPoint(ccp(0, 0));
-    recordSprite->setPosition(ccp(0, 0));
+    //recordSprite->setAnchorPoint(ccp(0, 0));
+    //recordSprite->setPosition(ccp(0, 0));
     float sx = this->width/winSize.width;
     float sy = this->height/winSize.height;
     recordSprite->setScaleX(sx);
     recordSprite->setScaleY(sy);
     //CCDirector::sharedDirector()->getRecordSprite()->setScaleY(1);
-    CCDirector::sharedDirector()->getRecordSprite()->visit();
+    recordSprite->visit();
     //CCDirector::sharedDirector()->getRecordSprite()->setScaleY(-1);
     recordSprite->setAnchorPoint(ccp(0.5, 0.5));
     recordSprite->setPosition(ccp(winSize.width/2, winSize.height/2));
