@@ -900,8 +900,8 @@ function BuildView:changeUpdateState(isOpen)
 	local scene = self.scene
 	local opened = mould.updateOpened
 	if not opened and isOpen then
-		if (scene.sceneType==SceneType.Operation or scene.sceneType==SceneType.Visit) and (mould.buildState==BuildStates.STATE_BUILDING or (mould.updateOperationLogic and mould.buildState==BuildStates.STATE_FREE and mould.buildLevel>0 and not self.isOperationDestroy)) then
-			if scene.sceneType==SceneType.Operation then
+		if (scene.sceneType==SceneTypes.Operation or scene.sceneType==SceneTypes.Visit) and (mould.buildState==BuildStates.STATE_BUILDING or (mould.updateOperationLogic and mould.buildState==BuildStates.STATE_FREE and mould.buildLevel>0 and not self.isOperationDestroy)) then
+			if scene.sceneType==SceneTypes.Operation then
 				UpdateLogic.addUpdate(mould, mould.updateOperation)
 			else
 				UpdateLogic.addUpdate(mould, mould.updateVisit)
@@ -910,7 +910,7 @@ function BuildView:changeUpdateState(isOpen)
 	elseif opened and isOpen then
 		self.updateDeleted = nil
 	elseif opened then
-		if (scene.sceneType==SceneType.Operation or scene.sceneType==SceneType.Visit) and mould.buildState~=BuildStates.STATE_BUILDING and not mould.updateOperationLogic then
+		if (scene.sceneType==SceneTypes.Operation or scene.sceneType==SceneTypes.Visit) and mould.buildState~=BuildStates.STATE_BUILDING and not mould.updateOperationLogic then
 			self.updateDeleted = true
 		end
 	end
