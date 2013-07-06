@@ -36,7 +36,14 @@ static GCHelper* instance = nil;
     NSString *name = [self getLeaderboardName];
     [self reportScore:1000 forLeaderboardID:name];
     //加载信息结束 测试 leaderboarder 显示
-    [self showLeaderboard:name rootController:self->myRoot];
+    //[self showLeaderboard:name rootController:self->myRoot];
+}
+-(void) testAchievements {
+    for(int i = 1; i <= 14; i++) {
+        [self reportAchievementIdentifier:[NSString stringWithFormat:@"task%d.1", i]  percentComplete:100];
+    }
+    
+    [self showAchievements];
 }
 - (void)authenticationChanged {
     NSLog(@"authentication changed");
@@ -49,6 +56,7 @@ static GCHelper* instance = nil;
         }
         //登陆之后加在leaderboard 信息
         [self loadLeaderboardInfo];
+        [self loadAchievement];
     }
 }
 
@@ -110,6 +118,7 @@ static GCHelper* instance = nil;
         }];
     } else {
         [self loadLeaderboardInfo];
+        [self loadAchievement];
     }
 }
 //load leaderboard info
@@ -153,5 +162,52 @@ static GCHelper* instance = nil;
 }
 -(void) gameCenterViewControllerDidFinish : (GKGameCenterViewController *)gameCenterViewController {
     [self->myRoot dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(void) reportAchievementIdentifier:(NSString *)identifier percentComplete:(float)percent {
+    GKAchievement *achievement = [[GKAchievement alloc] initWithIdentifier:identifier];
+    if (achievement) {
+        achievement.percentComplete = percent;
+        [achievement reportAchievementWithCompletionHandler:^(NSError *error) {
+            if (error != nil) {
+                NSLog(@"achieve report error %@", error);
+            }
+        }];
+        
+    }
+}
+-(void) loadAchievement {
+    NSLog(@"load Achievement info");
+    [GKAchievement loadAchievementsWithCompletionHandler:^(NSArray *achievements, NSError *error) {
+        NSLog(@"achievements is %@ %@", achievements, error);
+        if (error != nil) {
+            NSLog(@"achievement error %@", error);
+        }
+        if (achievements != nil) {
+            
+            for (GKAchievement *a in achievements) {
+                NSLog(@"achievemts is %@", a);
+                NSLog(@"achieve id %@", a.identifier);
+            }
+        } else {
+            
+        }
+        [self testAchievements];
+    }];
+}
+-(void) resetAchievements {
+    [GKAchievement resetAchievementsWithCompletionHandler:^(NSError *error) {
+        if (error != nil) {
+            NSLog(@"reset error %@", error);
+        }
+    }];
+}
+-(void) showAchievements {
+    GKGameCenterViewController *gameCenterController = [[GKGameCenterViewController alloc] init];
+    if (gameCenterController != nil) {
+        gameCenterController.gameCenterDelegate = self;
+        gameCenterController.viewState = GKGameCenterViewControllerStateAchievements;
+        [self->myRoot presentViewController:gameCenterController animated:YES completion:nil];
+    }
 }
 @end

@@ -26,4 +26,11 @@
 - (NSString *)getLeaderboardName;
 - (void)showLeaderboard : (NSString *)leaderBoardID rootController:(UIViewController *)rootController;
 - (void) testLeaderBoard;
+
+
+- (void) reportAchievementIdentifier: (NSString *)identifier percentComplete : (float) percent;
+- (void) loadAchievement;
+- (void) resetAchievements;
+- (void) testAchievements;
+- (void) showAchievements;
 @end
