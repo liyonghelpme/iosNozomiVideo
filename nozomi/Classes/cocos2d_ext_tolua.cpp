@@ -4,6 +4,9 @@
 #include "cocos2d.h"
 #include "CCLuaEngine.h"
 #include "cocos2d_ext.h"
+#if !defined(_WIN32) 
+#include "MyPlugins.h"
+#endif
 
 using namespace cocos2d;
 using namespace cocos2d::extension;
@@ -543,27 +546,29 @@ static int tolua_Cocos2d_CCTextInput_getString00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: clearString of class CCTextInput */
-#ifndef TOLUA_DISABLE_tolua_Cocos2d_CCTextInput_clearString00
-static int tolua_Cocos2d_CCTextInput_clearString00(lua_State* tolua_S)
+/* method: setString of class CCTextInput */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_CCTextInput_setString00
+static int tolua_Cocos2d_CCTextInput_setString00(lua_State* tolua_S)
 {
  tolua_Error tolua_err;
  if (
      !tolua_isusertype(tolua_S,1,"CCTextInput",0,&tolua_err) ||
-     !tolua_isnoobj(tolua_S,2,&tolua_err)
+	 !tolua_isstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
   goto tolua_lerror;
  else
  {
 	CCTextInput* self = (CCTextInput*) tolua_tousertype(tolua_S,1,0);
+	const char* str = (const char*) tolua_tostring(tolua_S,2,0);
   {
-	  self->setString("");
+	  self->setString(str);
 	  self->closeIME();
   }
  }
  return 0;
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'setTouchPriority'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'setString'.",&tolua_err);
  return 0;
 }
 #endif //#ifndef TOLUA_DISABLE
@@ -1401,6 +1406,69 @@ tolua_lerror:
 }
 #endif //#ifndef TOLUA_DISABLE
 
+#if !defined(_WIN32) 
+/* method: shareWithSocialPlugin of class MyPlugins */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_MyPlugins_shareWithSocialPlugin00
+static int tolua_Cocos2d_MyPlugins_shareWithSocialPlugin00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_isusertype(tolua_S, 1, "MyPlugins", 0, &tolua_err) ||
+		!tolua_isstring(tolua_S,2,0,&tolua_err) ||
+		!tolua_isstring(tolua_S,3,0,&tolua_err) ||
+		!tolua_isnoobj(tolua_S,4,&tolua_err)
+	)
+	 goto tolua_lerror;
+	else
+#endif
+	{
+		MyPlugins* self = (MyPlugins*) tolua_tousertype(tolua_S,1,0);
+		const char* text = ((const char*)  tolua_tostring(tolua_S,2,0));
+		const char* image = ((const char*)  tolua_tostring(tolua_S,3,0));
+		{
+			self->shareWithSocialPlugin(text, image);
+		}
+	}
+	return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'shareWithSocialPlugin'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: sharedPlugins of class MyPlugins */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_MyPlugins_sharedPlugins00
+static int tolua_Cocos2d_MyPlugins_sharedPlugins00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_isusertable(tolua_S, 1, "MyPlugins", 0, &tolua_err) ||
+		!tolua_isnoobj(tolua_S,2,&tolua_err)
+        )
+        goto tolua_lerror;
+	else
+#endif
+	{
+		{
+			MyPlugins * tolua_ret = (MyPlugins *) MyPlugins::sharedPlugins();
+			tolua_pushusertype(tolua_S,(void*)tolua_ret,"MyPlugins");
+		}
+	}
+	return 1;
+#ifndef TOLUA_RELEASE
+tolua_lerror:
+    tolua_error(tolua_S,"#ferror in function 'sharedPlugins'.",&tolua_err);
+    return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+#endif
+
 TOLUA_API int tolua_ext_reg_types(lua_State* tolua_S)
 {
  tolua_usertype(tolua_S,"CCExtendNode");
@@ -1418,6 +1486,10 @@ TOLUA_API int tolua_ext_reg_types(lua_State* tolua_S)
  tolua_usertype(tolua_S,"CCNative");
  tolua_usertype(tolua_S,"CCWebView");
  tolua_usertype(tolua_S,"VideoCamera");
+ 
+#if !defined(_WIN32) 
+ tolua_usertype(tolua_S,"MyPlugins");
+#endif
  return 1;
 }
 
@@ -1450,7 +1522,7 @@ TOLUA_API int tolua_ext_reg_modules(lua_State* tolua_S)
    tolua_function(tolua_S, "create", tolua_Cocos2d_CCTextInput_create00);
    tolua_function(tolua_S, "setTouchPriority", tolua_Cocos2d_CCTextInput_setTouchPriority00);
    tolua_function(tolua_S, "setColor", tolua_Cocos2d_CCTextInput_setColor00);
-   tolua_function(tolua_S, "clearString", tolua_Cocos2d_CCTextInput_clearString00);
+   tolua_function(tolua_S, "setString", tolua_Cocos2d_CCTextInput_setString00);
    tolua_function(tolua_S, "getString", tolua_Cocos2d_CCTextInput_getString00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"CCImageLoader","CCImageLoader","CCNode",NULL);
@@ -1513,5 +1585,13 @@ TOLUA_API int tolua_ext_reg_modules(lua_State* tolua_S)
    tolua_function(tolua_S,"endRecord",tolua_Cocos2d_VideoCamera_endRecord00);
    tolua_function(tolua_S,"create",tolua_Cocos2d_VideoCamera_create00);
   tolua_endmodule(tolua_S);
+  
+#if !defined(_WIN32) 
+  tolua_cclass(tolua_S,"MyPlugins","MyPlugins","",NULL);
+  tolua_beginmodule(tolua_S,"MyPlugins");
+   tolua_function(tolua_S,"sharedPlugins",tolua_Cocos2d_MyPlugins_sharedPlugins00);
+   tolua_function(tolua_S,"shareWithSocialPlugin",tolua_Cocos2d_MyPlugins_shareWithSocialPlugin00);
+  tolua_endmodule(tolua_S);
+#endif
   return 1;
 }

@@ -4,6 +4,8 @@
 #include "script_support/CCScriptSupport.h"
 #include "CCLuaEngine.h"
 
+#include "MyPlugins.h"
+
 USING_NS_CC;
 using namespace CocosDenshion;
 
@@ -22,6 +24,7 @@ AppDelegate::~AppDelegate()
 
 bool AppDelegate::applicationDidFinishLaunching()
 {
+    MyPlugins::sharedPlugins()->loadPlugins();
     // initialize director
     CCDirector *pDirector = CCDirector::sharedDirector();
     pDirector->setOpenGLView(CCEGLView::sharedOpenGLView());
