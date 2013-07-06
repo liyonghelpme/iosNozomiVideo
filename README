@@ -3,3 +3,6 @@ CameraFile:
 	1024 768    
 	960 640
 	compressFrame
+GCHelper:
+	reportScore 
+	openLeaderBoard
