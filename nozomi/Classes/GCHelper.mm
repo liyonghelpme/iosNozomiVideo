@@ -33,14 +33,19 @@ static GCHelper* instance = nil;
     return (gcClass && osVersionSupported);
 }
 - (void) testLeaderBoard {
+    return;
     NSString *name = [self getLeaderboardName];
     [self reportScore:1000 forLeaderboardID:name];
     //加载信息结束 测试 leaderboarder 显示
     //[self showLeaderboard:name rootController:self->myRoot];
 }
 -(void) testAchievements {
+    //don't test
+    return;
     for(int i = 1; i <= 14; i++) {
         [self reportAchievementIdentifier:[NSString stringWithFormat:@"task%d.1", i]  percentComplete:100];
+        [self reportAchievementIdentifier:[NSString stringWithFormat:@"task%d.2", i]  percentComplete:100];
+        [self reportAchievementIdentifier:[NSString stringWithFormat:@"task%d.3", i]  percentComplete:100];
     }
     
     [self showAchievements];

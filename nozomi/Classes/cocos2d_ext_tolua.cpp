@@ -1348,6 +1348,67 @@ tolua_lerror:
 }
 #endif //#ifndef TOLUA_DISABLE
 
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+/* method: reportAchievement of class CCNative */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_CCNative_reportAchievement00
+static int tolua_Cocos2d_CCNative_reportAchievement00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_isusertable(tolua_S, 1, "CCNative", 0, &tolua_err) ||
+		!tolua_isstring(tolua_S,2,0,&tolua_err) ||
+		!tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+		!tolua_isnoobj(tolua_S,4,&tolua_err)
+	)
+	 goto tolua_lerror;
+	else
+#endif
+	{
+		const char* identifier = ((const char*)  tolua_tostring(tolua_S,2,0));
+		float percent = ((float) tolua_tonumber(tolua_S,3,0));
+		{
+			CCNative::reportAchievement(identifier, percent);
+		}
+	}
+	return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'reportAchievement'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: showAchievements of class CCNative */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_CCNative_showAchievements00
+static int tolua_Cocos2d_CCNative_showAchievements00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+	tolua_Error tolua_err;
+	if (
+		!tolua_isusertable(tolua_S, 1, "CCNative", 0, &tolua_err) ||
+		!tolua_isnoobj(tolua_S,2,&tolua_err)
+	)
+	 goto tolua_lerror;
+	else
+#endif
+	{
+		{
+			CCNative::showAchievements();
+		}
+	}
+	return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'showAchievements'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+#endif // IOS GAMERCENTER
+
+
 /* method: endRecord of class VideoCamera */
 #ifndef TOLUA_DISABLE_tolua_Cocos2d_VideoCamera_endRecord00
 static int tolua_Cocos2d_VideoCamera_endRecord00(lua_State* tolua_S)
@@ -1574,6 +1635,13 @@ TOLUA_API int tolua_ext_reg_modules(lua_State* tolua_S)
    tolua_function(tolua_S,"postNotification", tolua_Cocos2d_CCNative_postNotification00);
    tolua_function(tolua_S,"clearLocalNotification", tolua_Cocos2d_CCNative_clearLocalNotification00);
    tolua_function(tolua_S,"buyProductIdentifier",tolua_Cocos2d_CCNative_buyProductIdentifier00);
+
+
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+   tolua_function(tolua_S,"showAchievements", tolua_Cocos2d_CCNative_showAchievements00);
+   tolua_function(tolua_S,"reportAchievement",tolua_Cocos2d_CCNative_reportAchievement00);
+#endif
+
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"CCWebView","CCWebView","CCObject",NULL);
    tolua_beginmodule(tolua_S,"CCWebView");

@@ -1,6 +1,7 @@
 --格式: Entry(字符串标识， 字符串中文， 字符串英文)
 
 -- 按钮文字
+Entry("buttonAchievementsMore","游戏中心","Game Center")
 Entry("buttonBack","返回","Back")
 Entry("buttonMenu","菜单","Menu")
 Entry("buttonVideo","视频","Video")

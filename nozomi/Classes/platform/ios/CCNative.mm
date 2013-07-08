@@ -9,6 +9,7 @@
 #include "platform/CCNative.h"
 #include "platform/ios/IAPHelper.h"
 #include "support/CCNotificationCenter.h"
+#include "GCHelper.h"
 
 NS_CC_EXT_BEGIN
 
@@ -47,5 +48,11 @@ void CCNative::buyProductIdentifier(const char *productId)
     //CCNotificationCenter::sharedNotificationCenter()->postNotification("EVENT_BUY_SUCCESS");
     [[IAPHelper sharedHelper] buyProductIdentifier:[NSString stringWithCString:productId encoding:NSUTF8StringEncoding]];
 }
-
+void CCNative::showAchievements() {
+    [[GCHelper sharedGameCenter] showAchievements];
+}
+void CCNative::reportAchievement(const char *identifer, float percent) {
+    [[GCHelper sharedGameCenter] reportAchievementIdentifier: [NSString stringWithUTF8String:identifer] percentComplete:percent];
+    
+}
 NS_CC_EXT_END

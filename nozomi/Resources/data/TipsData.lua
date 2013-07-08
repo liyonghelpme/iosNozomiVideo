@@ -16,11 +16,13 @@ function TipsData.getTip()
 	end
 	
 	for i=1, #allTips do
-	    if allTips[i][2]<=level and allTips[i][3]>=level then
+	    if allTips[i][2] <= level and allTips[i][3] >= level then
 	        table.insert(tips, allTips[i][1])
 	    end
 	end
-
+	print("allTipsData", #allTips)
+	print("tips", level, #tips, tips[1])
+	print("strings", StringManager.getString("dataTips"..tips[1]))
 	if #tips>0 then
     	return StringManager.getString("dataTips" .. tips[math.random(#tips)])
     else

@@ -10,7 +10,7 @@ General = {
     font5 = "Heiti SC Medium", font6 = "bold2", 
     nightColor = ccc3(100, 100, 100), normalColor = ccc3(255, 255, 255);
     darkAlpha=100,
-    useGameCenter=false, supportVideo=false
+    useGameCenter=true, supportVideo=true
 }
 
 require "General.screen"

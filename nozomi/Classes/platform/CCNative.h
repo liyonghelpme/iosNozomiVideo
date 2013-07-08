@@ -21,6 +21,8 @@ public:
 
 	static void buyProductIdentifier(const char* productId);
     
+    static void showAchievements();
+    static void reportAchievement(const char *identifer, float percent);
 private:
     CCNative(void) {}
 };

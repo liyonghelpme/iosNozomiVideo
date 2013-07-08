@@ -98,6 +98,11 @@ local function updateAchievementCell(bg, scrollView, info)
     end
 end
 
+local function showGameCenterAchievements()
+	display.closeDialog()
+	CCNative:showAchievements()
+end
+
 function AchievementDialog.show()
     local temp, bg = nil
     bg = UI.createButton(CCSizeMake(720, 526), doNothing, {image="images/dialogBgA.png", priority=display.DIALOG_PRI, nodeChangeHandler = doNothing})
@@ -143,6 +148,11 @@ function AchievementDialog.show()
         bg:addChild(temp)
         temp = UI.createLabel(StringManager.getString("labelGameCenterAchieve"), General.font1, 13, {colorR = 0, colorG = 0, colorB = 0})
         screen.autoSuitable(temp, {x=614, y=55, nodeAnchor=General.anchorRight})
+        bg:addChild(temp)
+        local buttonW = 120
+        local w = temp:getContentSize().width * temp:getScaleX() + buttonW/2
+        temp = UI.createButton(CCSizeMake(buttonW, 42), showGameCenterAchievements, {image="images/buttonGreen.png", fontSize=18, fontName=General.font3, text=StringManager.getString("buttonAchievementsMore")})
+        screen.autoSuitable(temp, {x=610-w, y=55, nodeAnchor=General.anchorCenter})
         bg:addChild(temp)
     end
     

@@ -203,9 +203,11 @@ function BattleResultDialog:ctor(result)
 	for id, buildData in pairs(result.resourceBuilds) do
 	    local b = scene.builds[id]
 	    if buildData.resources and b.buildData.bid~=TOWN_BID and b.getExtendInfo then
-	        local ext = b:getExtendInfo()
+	        local item = b:getBaseInfo()
+	        local ext = json.decode(item[7])
 	        ext.resource = ext.resource - math.floor(buildData.resources[b.resourceType]*(1-buildData.hitpoints/buildData.max))
-	        table.insert(update, {id, json.encode(ext)})
+	        item[7] = json.encode(ext)
+	        table.insert(update, item)
 	    end
 	    if buildData.hitpoints<buildData.max then
 	        table.insert(hits, {id, buildData.hitpoints})
@@ -214,7 +216,7 @@ function BattleResultDialog:ctor(result)
 	local params = {}
     if not BattleLogic.isLeagueBattle then
     	if #update>0 then
-    	    params.eupdate = json.encode(update)
+    	    params.update = json.encode(update)
     	end
     	if #deleted>0 then
     	    params.delete = json.encode(deleted)
@@ -237,7 +239,6 @@ function BattleResultDialog:ctor(result)
 	    params.lscore = 0
 	    if result.stars>0 then
 	        params.lscore = BattleLogic.enemyMtype*2+1
-	        UserData.clanInfo[3] = UserData.clanInfo[3]+params.lscore
 	    end
 	    params.cid = UserData.clan
 	    params.bid = BattleLogic.leagueBattleId
@@ -247,6 +248,7 @@ function BattleResultDialog:ctor(result)
 	params.uid = UserData.userId
 	if params.isReverge and not BattleLogic.isLeagueBattle then
         params.eid = BattleLogic.enemyId
+        print("i test reverge", BattleLogic.enemyId, UserData.enemyId)
         BattleLogic.revergeItem.revenged = true
         BattleLogic.revergeItem = nil
     else
@@ -255,6 +257,7 @@ function BattleResultDialog:ctor(result)
         UserData.enemyId = nil
     end
 	-- shieldTime
+    print("startSynBattleData now!")
     network.httpRequest("synBattleData", self.synBattleDone, {isPost=true, params=params}, self)
     for key, value in pairs(params) do
         print(key, value)
@@ -272,6 +275,7 @@ function BattleResultDialog:ctor(result)
 end
 
 function BattleResultDialog:endBattle()
+    print("endBattle", self.synOver)
     if self.synOver then
     	display.popScene(PreBattleScene)
     	self.synOver = false
@@ -281,10 +285,12 @@ function BattleResultDialog:endBattle()
 end
 
 function BattleResultDialog:synBattleDone()
+    print("synBattleDone", self.endButtonDown)
     if self.endButtonDown then
     	display.popScene(PreBattleScene)
     	SoldierLogic.isInit = true
     else
         self.synOver = true
+        print("synOver Data", self.synOver)
     end
 end

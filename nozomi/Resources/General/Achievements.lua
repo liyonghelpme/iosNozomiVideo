@@ -78,6 +78,11 @@ function Achievements.completeAchievement(id)
     			item.max = AchieveItems[id][item.level][1]
     			item.exp = AchieveItems[id][item.level][2]
     			item.crystal = AchieveItems[id][item.level][3]
+			--chinese is task
+			--english is nozomi
+    			if General.useGameCenter  then
+    				CCNative:reportAchievement("nozomi" .. id .. "." .. item.level, squeeze(100*item.num/item.max, nil, 100))
+				end
     		end
             break
         end
@@ -93,6 +98,11 @@ function Achievements.updateAchieveData(type, key, value)
 			a.num = a.num + value
 		elseif a.num<value then
 			a.num = value
+		end
+		if General.useGameCenter and oldValue < a.max and oldValue < a.num then
+			--chinese task
+			--english nozomi
+			CCNative:reportAchievement("nozomi" .. a.id .. "." .. a.level, squeeze(100*a.num/a.max, nil, 100))
 		end
 		if a.num>= AchieveItems[a.id][3][1] then
 		    a.num = AchieveItems[a.id][3][1]

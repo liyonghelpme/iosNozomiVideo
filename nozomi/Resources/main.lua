@@ -41,7 +41,7 @@ local function main()
 	require "UI.UI"
 	require "UI.Effect"
 	
-	local language = StringManager.LANGUAGE_CN
+	local language = StringManager.LANGUAGE_EN
     StringManager.init(language)
 	if language==StringManager.LANGUAGE_CN then
     	ATTACK_BUTTON_SIZE = 27
@@ -80,7 +80,7 @@ local function main()
 	math.randomseed(os.time())
     
     --CCUserDefault:sharedUserDefault():setStringForKey("username", "AD8E5567-F108-4B4E-9353-3635261EC1FE-del")
-    
+    print("nozomi main.lua test")
     display.runScene(OperationScene.new(), LoadingScene)
     
     --require "Scene.TestScene"
