@@ -151,7 +151,7 @@ function AchievementDialog.show()
         bg:addChild(temp)
         local buttonW = 120
         local w = temp:getContentSize().width * temp:getScaleX() + buttonW/2
-        temp = UI.createButton(CCSizeMake(buttonW, 42), showGameCenterAchievements, {image="images/buttonGreen.png", fontSize=18, fontName=General.font3, text=StringManager.getString("buttonAchievementsMore")})
+        temp = UI.createButton(CCSizeMake(buttonW, 42), showGameCenterAchievements, {image="images/buttonGreen.png", fontSize=16, fontName=General.font3, text=StringManager.getString("buttonAchievementsMore")})
         screen.autoSuitable(temp, {x=610-w, y=55, nodeAnchor=General.anchorCenter})
         bg:addChild(temp)
     end

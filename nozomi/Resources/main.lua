@@ -41,7 +41,7 @@ local function main()
 	require "UI.UI"
 	require "UI.Effect"
 	
-	local language = StringManager.LANGUAGE_EN
+	local language = StringManager.LANGUAGE_CN
     StringManager.init(language)
 	if language==StringManager.LANGUAGE_CN then
     	ATTACK_BUTTON_SIZE = 27
